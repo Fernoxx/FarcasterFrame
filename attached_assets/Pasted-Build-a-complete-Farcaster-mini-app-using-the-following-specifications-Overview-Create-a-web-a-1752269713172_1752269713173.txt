@@ -1,0 +1,54 @@
+Build a complete Farcaster mini app using the following specifications:
+
+🔹 Overview:
+Create a web app that lets users enter their Farcaster username and date of birth. When they submit, the app will generate a mystical AI/crypto-themed prediction based on their date of birth. This prediction is secretly based on Indian astrology logic, but should never mention astrology directly. Instead, use cryptic, futuristic language.
+
+🔹 Tech Requirements:
+- Pure HTML + JavaScript frontend (in `index.html`)
+- A serverless-compatible backend (in `/api/predict.js`) that works on Vercel
+- Use Express or standard Node.js export for the backend, but structure it to run on Vercel (i.e., as a serverless function in `api/`)
+- Do NOT use any local Express `app.listen(...)` — it should be designed to deploy on Vercel
+- Create `package.json` with correct setup and lightweight dependencies if needed
+- Ensure this works on Vercel by visiting `/api/predict` after deployment (do not return code or JSON — return an actual rendered HTML response)
+
+🔹 UI Requirements:
+- Background color: `#cedce7`
+- Text color: `#293958`
+- Heading font: "Crimson Pro" from Google Fonts
+- Body font: "Figtree" from Google Fonts
+- Beautiful, minimal, modern design with good padding and spacing
+- Simple centered form:
+  - Input for Farcaster Username
+  - Input for Date of Birth (dd-mm-yyyy)
+  - Submit button: “Reveal My Digital Fate”
+- When submitted, it should POST to `/api/predict` and receive a complete HTML page with the prediction
+
+🔹 Frame Requirements:
+- The HTML returned by `/api/predict` should include:
+  - `<meta name="fc:frame" content="vNext" />`
+  - `<meta name="fc:frame:image" content="..." />` — Use a generated dummy image with prediction text (you can use https://dummyimage.com or generate simple SVG with the prediction)
+  - `<meta name="fc:frame:button:1" content="Reveal Again" />`
+  - `<meta name="fc:frame:post_url" content="https://your-vercel-deployment.vercel.app/api/predict" />` — replace with current domain automatically
+
+🔹 Prediction Logic:
+- Use the user’s date of birth to map into one of 12 cryptic "tech-zodiac" signs based loosely on Indian zodiac mapping (but keep it hidden).
+- Generate a mystical message that sounds like:
+  > “The Neural Tide aligns with Protocol Gemini. By 2032, a self-learning token may choose your voice as its oracle. Watch the 8th lunar cycle.”
+
+- Include symbols like 🤖 🧠 💰 🪙 ✨ sparingly
+- Never mention "astrology", "zodiac", "stars", or anything directly traditional
+- Make each prediction seem personalized and futuristic
+
+🔹 Final Structure:
+- `/index.html` — main form UI
+- `/api/predict.js` — backend response with prediction
+- `/package.json` — minimal dependencies if needed
+
+🔹 Deployment Compatibility:
+- Ensure it works when pushed to GitHub and deployed to Vercel.
+- When deployed, visiting `/api/predict` directly should return an HTML response (not raw code, not 500 error)
+- Ensure headers are set correctly: `Content-Type: text/html`
+
+Do not require the user to input manually any texts or choose options. Entire prediction logic must be auto-generated.
+
+Return the full file structure with content of each file ready to copy-paste into Replit. Also ensure it runs properly without modification after deploying on Vercel.
