@@ -341,9 +341,8 @@ function sendPredictionResponse(res, username, predictionData, req) {
         <a href="/" class="back-button">Consult the Oracle Again</a>
         
         <div class="frame-note">
-            <strong>Farcaster Frame Enabled</strong><br>
-            This prediction can be shared as an interactive frame on Farcaster
-        </div>
+            <strong>Created by @blogx</strong><br>
+            Yo, as I said I am not a fortune teller, but I can predict from how algorith behave.       </div>
     </div>
 </body>
 </html>`;
