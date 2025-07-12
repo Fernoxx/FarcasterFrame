@@ -105,147 +105,54 @@ function generateSamplePrediction() {
   }
 }
 
-function sendPredictionResponse(res, username, { sign, symbol, prediction, element }, req) {
+function sendPredictionResponse(res, username, predictionData, req) {
+  const { sign, symbol, prediction, element } = predictionData
+
+  // reconstruct domain
   const protocol = req.headers['x-forwarded-proto'] || 'https'
   const host     = req.headers.host || 'localhost:3000'
   const imageText = encodeURIComponent(`${sign} ${symbol}`)
   const imageUrl  = `https://dummyimage.com/600x314/293958/cedce7.png&text=${imageText}`
 
-  const html = `
-<!DOCTYPE html>
+  const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Your Digital Prophecy - ${username}</title>
-  <!-- Farcaster Frame metas & OG -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Digital Prophecy – ${username}</title>
+
+  <!-- Farcaster Frame Meta Tags -->
   <meta name="fc:frame" content="vNext">
   <meta name="fc:frame:image" content="${imageUrl}">
-  <meta property="og:title" content="Digital Oracle - ${sign}">
+  <meta name="fc:frame:button:1" content="Reveal Again">
+  <meta name="fc:frame:post_url" content="${protocol}://${host}/api/predict">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Digital Oracle – ${sign}">
   <meta property="og:description" content="${prediction.substring(0,100)}...">
   <meta property="og:image" content="${imageUrl}">
-  <!-- Fonts & Styles (unchanged) -->
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Your existing styles -->
   <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    background-color: #cedce7;
-    color: #293958;
-    font-family: 'Figtree', sans-serif;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-
-  .prophecy-container {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
-    padding: 50px;
-    box-shadow: 0 15px 40px rgba(41, 57, 88, 0.15);
-    max-width: 700px;
-    width: 100%;
-    backdrop-filter: blur(10px);
-    text-align: center;
-  }
-
-  .username {
-    font-size: 1.1rem;
-    opacity: 0.7;
-    margin-bottom: 20px;
-  }
-
-  .sign-title {
-    font-family: 'Crimson Pro', serif;
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-    background: linear-gradient(135deg, #293958, #4a6fa5);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .symbol {
-    font-size: 4rem;
-    margin: 20px 0;
-    display: block;
-  }
-
-  .element {
-    font-size: 1.2rem;
-    color: #4a6fa5;
-    margin-bottom: 30px;
-    font-weight: 500;
-  }
-
-  .prediction {
-    font-size: 1.3rem;
-    line-height: 1.8;
-    margin: 30px 0;
-    padding: 30px;
-    background: linear-gradient(135deg, rgba(74, 111, 165, 0.1), rgba(41, 57, 88, 0.1));
-    border-radius: 15px;
-    border-left: 4px solid #4a6fa5;
-    text-align: left;
-  }
-
-  .mystical-footer {
-    margin-top: 40px;
-    opacity: 0.6;
-    font-size: 0.9rem;
-  }
-
-  .back-button {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 15px 30px;
-    background: linear-gradient(135deg, #293958, #4a6fa5);
-    color: white;
-    text-decoration: none;
-    border-radius: 12px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-  }
-
-  .back-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(41, 57, 88, 0.3);
-  }
-
-  .frame-note {
-    margin-top: 30px;
-    padding: 20px;
-    background: rgba(74, 111, 165, 0.1);
-    border-radius: 10px;
-    font-size: 0.9rem;
-    opacity: 0.8;
-  }
-
-  @media (max-width: 480px) {
-    .prophecy-container {
-      padding: 30px 20px;
-    }
-    .sign-title {
-      font-size: 2.2rem;
-    }
-    .symbol {
-      font-size: 3rem;
-    }
-    .prediction {
-      font-size: 1.1rem;
-      padding: 20px;
-    }
-  }
-</style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background-color:#cedce7;color:#293958;font-family:'Figtree',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+    .prophecy-container{background:rgba(255,255,255,0.95);border-radius:20px;padding:50px;box-shadow:0 15px 40px rgba(41,57,88,0.15);max-width:700px;width:100%;backdrop-filter:blur(10px);text-align:center}
+    .username{font-size:1.1rem;opacity:0.7;margin-bottom:20px}
+    .sign-title{font-family:'Crimson Pro',serif;font-size:3rem;font-weight:700;margin-bottom:10px;background:linear-gradient(135deg,#293958,#4a6fa5);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .symbol{font-size:4rem;margin:20px 0;display:block}
+    .element{font-size:1.2rem;color:#4a6fa5;margin-bottom:30px;font-weight:500}
+    .prediction{font-size:1.3rem;line-height:1.8;margin:30px 0;padding:30px;background:linear-gradient(135deg,rgba(74,111,165,0.1),rgba(41,57,88,0.1));border-radius:15px;border-left:4px solid #4a6fa5;text-align:left}
+    .mystical-footer{margin-top:40px;opacity:0.6;font-size:0.9rem}
+    .back-button{display:inline-block;margin-top:30px;padding:15px 30px;background:linear-gradient(135deg,#293958,#4a6fa5);color:white;text-decoration:none;border-radius:12px;font-weight:600;transition:all 0.3s ease}
+    .back-button:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(41,57,88,0.3)}
+    .frame-note{margin-top:30px;padding:20px;background:rgba(74,111,165,0.1);border-radius:10px;font-size:0.9rem;opacity:0.8}
+    @media(max-width:480px){.prophecy-container{padding:30px 20px}.sign-title{font-size:2.2rem}.symbol{font-size:3rem}.prediction{font-size:1.1rem;padding:20px}}
+  </style>
 </head>
 <body>
   <div class="prophecy-container">
@@ -258,30 +165,32 @@ function sendPredictionResponse(res, username, { sign, symbol, prediction, eleme
       <p>The algorithms have spoken. Your digital fate is sealed in the blockchain of destiny.</p>
       <p>🤖 ✨ 🧠 💰 ✨ 🪙</p>
     </div>
+
+    <!-- original button -->
     <a href="/" class="back-button">Consult the Oracle Again</a>
 
-    <!-- ★ Share on Farcaster ★ -->
+    <!-- new Share button matching UI -->
     <button id="shareBtn" class="back-button">Share</button>
-
-  <script type="module">
-    // pull in the Mini-App SDK at runtime
-    import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk'
-
-    document.getElementById('shareBtn').addEventListener('click', async () => {
-      try {
-        await sdk.actions.composeCast({
-          text: `I got ${sign}: "${prediction}". Get yours Cryptic Horroscope: ${window.location.href}`,
-          embeds: [window.location.href]
-        })
-      } catch (e) {
-        console.error('Share failed', e)
-      }
-    })
-  </script>
+    <script type="module">
+      import { sdk } from "https://esm.sh/@farcaster/miniapp-sdk"
+      document.getElementById("shareBtn").addEventListener("click", async () => {
+        try {
+          // build the share text using server-injected sign/prediction
+          const shareText = "${sign}: \\"${prediction}\\". Get yours Cryptic Horroscope: " + window.location.href
+          await sdk.actions.composeCast({
+            text: shareText,
+            embeds: [window.location.href]
+          })
+        } catch (e) {
+          console.error("Share failed", e)
+        }
+      })
+    </script>
   </div>
 </body>
 </html>`
 
-  res.setHeader('Content-Type', 'text/html')
+  res.setHeader("Content-Type", "text/html")
   res.status(200).send(html)
 }
+
