@@ -261,20 +261,23 @@ function sendPredictionResponse(res, username, { sign, symbol, prediction, eleme
     <a href="/" class="back-button">Consult the Oracle Again</a>
 
     <!-- ★ Share on Farcaster ★ -->
-    <button id="shareBtn">Share on Farcaster</button>
-    <script type="module">
-      import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk'
-      document.getElementById('shareBtn').addEventListener('click', async () => {
-        try {
-          await sdk.actions.composeCast({
-            text: \`My Digital Prophecy is ${sign}: "${prediction}"\`,
-            embeds: [window.location.href]
-          })
-        } catch (e) {
-          console.error('Share failed', e)
-        }
-      })
-    </script>
+    <button id="shareBtn" class="back-button">Share</button>
+
+  <script type="module">
+    // pull in the Mini-App SDK at runtime
+    import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk'
+
+    document.getElementById('shareBtn').addEventListener('click', async () => {
+      try {
+        await sdk.actions.composeCast({
+          text: `I got ${sign}: "${prediction}". Get yours Cryptic Horroscope: ${window.location.href}`,
+          embeds: [window.location.href]
+        })
+      } catch (e) {
+        console.error('Share failed', e)
+      }
+    })
+  </script>
   </div>
 </body>
 </html>`
