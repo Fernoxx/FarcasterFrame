@@ -75,18 +75,20 @@ function sendPredictionResponse(res, username, { sign, symbol, prediction, eleme
     <!-- SHARE BUTTON -->
     <button id="shareBtn">Share on Farcaster</button>
     <script type="module">
-      // load the sdk from a CDN at runtime
+      // load the SDK at runtime from esm.sh
       import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk'
-      document.getElementById('shareBtn').addEventListener('click', async () => {
-        try {
-          await sdk.actions.composeCast({
-            text: \`My Digital Prophecy is ${sign}: "${prediction}"\`,
-            embeds: [window.location.href]
-          })
-        } catch (e) {
-          console.error('Share failed', e)
-        }
-      })
+      
+      document.getElementById('shareBtn')
+        .addEventListener('click', async () => {
+          try {
+            await sdk.actions.composeCast({
+              text: `My Digital Prophecy is ${sign}: "${prediction}"`,
+              embeds: [window.location.href]
+            })
+          } catch (e) {
+            console.error('Share failed', e)
+          }
+        })
     </script>
   </div>
 </body>
