@@ -341,7 +341,7 @@ function sendPredictionResponse(res, username, predictionData, req) {
         <a href="/" class="back-button">Consult the Oracle Again</a>
         
         <div class="frame-note">
-            <strong>Created by @blogx</strong><br>
+            <strong>Created by @doteth</strong><br>
             Yo, as I said I am not a fortune teller, but I can predict from how algorith behave.       </div>
     </div>
 </body>
