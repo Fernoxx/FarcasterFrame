@@ -258,19 +258,19 @@ function sendPredictionResponse(res, username, { sign, symbol, prediction, eleme
       <p>The algorithms have spoken. Your digital fate is sealed in the blockchain of destiny.</p>
       <p>🤖 ✨ 🧠 💰 ✨ 🪙</p>
     </div>
-  <a href="/" class="back-button">Consult the Oracle Again</a>
+    <a href="/" class="back-button">Consult the Oracle Again</a>
 
-  <!-- ★ Fixed & Styled Share Button ★ -->
-  <button id="shareBtn" class="back-button">Share</button>
+    <!-- ★ Share on Farcaster ★ -->
+    <button id="shareBtn" class="back-button">Share</button>
 
   <script type="module">
+    // pull in the Mini-App SDK at runtime
     import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk'
 
     document.getElementById('shareBtn').addEventListener('click', async () => {
       try {
         await sdk.actions.composeCast({
-          // sign and prediction are injected by the server here
-          text: 'I got ${sign}: "${prediction}". Get yours Cryptic Horroscope: ' + window.location.href,
+          text: `I got ${sign}: "${prediction}". Get yours Cryptic Horroscope: ${window.location.href}`,
           embeds: [window.location.href]
         })
       } catch (e) {
@@ -278,6 +278,9 @@ function sendPredictionResponse(res, username, { sign, symbol, prediction, eleme
       }
     })
   </script>
+  </div>
+</body>
+</html>`
 
   res.setHeader('Content-Type', 'text/html')
   res.status(200).send(html)
